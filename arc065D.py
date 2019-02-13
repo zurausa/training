@@ -1,3 +1,4 @@
+#https://arc065.contest.atcoder.jp/tasks/arc065_b
 import sys
 
 n,k,l=map(int,sys.stdin.readline().split())
