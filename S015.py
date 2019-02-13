@@ -1,55 +1,53 @@
 import sys
+import math
 
 k, s, t = map(int, sys.stdin.readline().split())
 
 
-def get_range_text(k, p, s, t):
-    le = t - s + 1
-    len_cnt = 0
-    text = ''
-    res = ''
-    start = 0
-    if t <= k:
-        res = "A" * len
-    else:
-        if s <= k:
-            text += "A" * k
-            start = s - len_cnt
-        len_cnt = len_cnt + k
-        for n in p:
-            add_cnt = (n + 1) * 2
-            if s <= len_cnt + add_cnt:
-                text += "B" + "C" * n + "B" + "A" * n
-                if start == 0:
-                    start = s - len_cnt
-            if t <= len_cnt + add_cnt:
-                res = text[start - 1:start - 1 + le]
-                break
-            len_cnt += add_cnt
-        add_cnt = k + 1
-        if len(res) == 0 and t <= len_cnt + add_cnt:
-            text += "B" + "C" * k
-            if start == 0:
-                start = s - len_cnt
-            res = text[start - 1:start - 1 + le]
+def calc_len(x):
+    c1 = 0
+    c2 = 0
+    if x - 1 > 0:
+        c1 = int(math.pow(2, (x - 1)) * 3)
+    if x - 2 > 0:
+        c2 = int(math.pow(2, (x - 2)) - 1) * 6
+        if c2 < 0:
+            c2 = 0
+    return c1 + c2 + 3
+
+
+def get_range_text(k, s, t):
+    le = calc_len(k)
+    center = int(le / 2)
+    ralen = t - s + 1
+    res = ""
+    if s == 0:
+        res = "A"
+        ralen -= 1
+    if ralen > 0:
+        if s < center and k > 1:
+            sss = 0 if s - 1 < 0 else s - 1
+            eee = center - 2 if t >= center else sss + ralen - 1
+            res += get_range_text(k - 1, sss, eee)
+            ralen -= (eee - sss + 1)
+    if ralen > 0:
+        if s <= center and t >= center:
+            res += "B"
+            ralen -= 1
+    if ralen > 0:
+        if t > center and k > 1:
+            sss = 0 if s <= center else s - center - 1
+            eee = center - 2 if t >= le - 1 else sss + ralen - 1
+            res += get_range_text(k - 1, sss, eee)
+            ralen -= (eee - sss + 1)
+    if ralen > 0:
+        if t == (le - 1):
+            res += "C"
+            ralen -= 1
     return res
 
 
-def get_range_list(x):
-    p = [x-1]
-    n = x-2
-    while n >= 1:
-        res = [n]
-        for v in p:
-            res.append(v)
-            res.append(n)
-        n -= 1
-        p = res[:]
-    return p
-
-
-p = get_range_list(k)
-print(get_range_text(k, p, s, t))
+print(get_range_text(k, s-1, t-1))
 
 # st_dict = {}
 # st_dict[1] = "ABC"
