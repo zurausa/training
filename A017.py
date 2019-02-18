@@ -4,7 +4,6 @@ h, w, n = map(int, sys.stdin.readline().split())
 ac_list = [[] for _ in range(n)]
 for i in range(n):
     ac_list[i] = list([int(i) for i in sys.stdin.readline().split()])
-
 map_list = [[0 for i in range(w)] for j in range(h)]
 
 
