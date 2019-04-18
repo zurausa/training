@@ -12,15 +12,22 @@ for i in range(n):
     maplist[i] = list([int(i) - 1 for i in sys.stdin.readline().split()])[1:]
 
 # find s to g
+distset = set()
 
 
-def findg(n, dist):
-    tmp = maplist[n]
+def findg(n, dist, past):
+    tmp = list(set(maplist[n]) - set([past]))
+    if dist > 100 or len(tmp) == 0:
+        return
+    if g in tmp:
+        distset.add(dist+1)
     for i in tmp:
-        if g in maplist:
-            return dist + 1
-        else:
-            findg(i, dist+1)
+        findg(i, dist + 1, n)
 
 
-print(findg(s, 0))
+findg(s, 0, -1)
+for i in dice:
+    if i in distset:
+        print('yes')
+    else:
+        print('no')
