@@ -10,6 +10,8 @@ def li_(): return list([int(i)-1 for i in sys.stdin.readline().split()])
 
 test_list = []
 
+# 拡張性のある二次元配列の宣言
+
 
 # indexとるfor文
 for idx, i in enumerate(test_list):
